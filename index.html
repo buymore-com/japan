@@ -6,7 +6,7 @@
 <title>BuyMore — Tự động săn hàng đúng giây</title>
 <meta name="description" content="BuyMore: app tự động mua hàng mở bán giới hạn trên Yodobashi, đăng ký Chyusen. Vào đúng giây, tự đọc mã xác thực, theo dõi đơn. Dùng thử miễn phí.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=Montserrat:wght@800&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#f7f8fb; --card:#fff; --ink:#141824; --muted:#5b6476; --line:#e3e6ee;
@@ -52,9 +52,10 @@ nav .links a{margin-left:20px;color:var(--muted);text-decoration:none;font-size:
 @media(max-width:420px){.badges .shop img{height:24px}.badges .shop{padding:10px 14px}}
 @media(max-width:860px){.hero{grid-template-columns:1fr}}
 /* khẩu hiệu: mỗi cụm nằm trọn 1 dòng, cỡ chữ co theo bề ngang (dòng dài nhất ≈ 13 lần cỡ chữ) */
-h1.slogan span{display:block;white-space:nowrap}
+h1.slogan{font-family:"Montserrat","Be Vietnam Pro",sans-serif;line-height:1.45;letter-spacing:.01em}
+h1.slogan span{display:block;white-space:nowrap;padding-top:.12em}
 h1.slogan{font-size:min(38px,calc((100vw - 72px) / 26))}
-@media(max-width:860px){h1.slogan{font-size:min(38px,calc((100vw - 40px) / 13.5))}}
+@media(max-width:860px){h1.slogan{font-size:min(38px,calc((100vw - 40px) / 14.2))}}
 
 /* app mockup */
 .win{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 20px 50px -20px rgba(20,30,70,.35);overflow:hidden;font-size:13px}
