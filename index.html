@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BuyMore — Tự động săn hàng đúng giây</title>
+<meta name="description" content="BuyMore: app tự động mua hàng mở bán giới hạn trên Yodobashi, 7net, Rakuten, Bandai. Vào đúng giây, tự đọc OTP, theo dõi đơn. Dùng thử miễn phí.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f8fb; --card:#fff; --ink:#141824; --muted:#5b6476; --line:#e3e6ee;
+  --brand:#2563eb; --brand2:#7c3aed; --ok:#16a34a; --warn:#dc2626; --soft:#eef3ff;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1118; --card:#171b26; --ink:#eef1f7; --muted:#9aa3b5; --line:#2a3040;
+    --brand:#5b8cff; --brand2:#a78bfa; --ok:#34d399; --warn:#f87171; --soft:#1c2438;
+  }
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 "Be Vietnam Pro",system-ui,sans-serif}
+a{color:var(--brand)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+section{padding:64px 0}
+h1{font-size:clamp(30px,5vw,50px);line-height:1.15;font-weight:800}
+h2{font-size:clamp(24px,3.5vw,34px);font-weight:800;margin-bottom:8px}
+.sub{color:var(--muted);margin-bottom:32px}
+.grad{background:linear-gradient(90deg,var(--brand),var(--brand2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn{display:inline-block;padding:13px 22px;border-radius:12px;font-weight:600;text-decoration:none}
+.btn.pri{background:var(--brand);color:#fff}
+.btn.sec{border:1px solid var(--line);color:var(--ink);background:var(--card)}
+
+/* nav */
+nav{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-weight:800;font-size:20px;display:flex;gap:8px;align-items:center;color:var(--ink);text-decoration:none}
+.logo i{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:grid;place-items:center;color:#fff;font-style:normal;font-size:15px}
+nav .links a{margin-left:20px;color:var(--muted);text-decoration:none;font-size:15px}
+@media(max-width:640px){nav .links a:not(.btn){display:none}}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center;padding-top:56px}
+.hero p.lead{font-size:18px;color:var(--muted);margin:18px 0 26px}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.badges span{font-size:13px;padding:5px 10px;border-radius:99px;background:var(--soft);color:var(--brand);font-weight:600}
+@media(max-width:860px){.hero{grid-template-columns:1fr}}
+
+/* app mockup */
+.win{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 20px 50px -20px rgba(20,30,70,.35);overflow:hidden;font-size:13px}
+.win .bar{display:flex;gap:6px;padding:10px 12px;border-bottom:1px solid var(--line);align-items:center}
+.win .bar b{width:11px;height:11px;border-radius:50%;background:#ff5f57}
+.win .bar b:nth-child(2){background:#febc2e}.win .bar b:nth-child(3){background:#28c840}
+.win .bar span{margin-left:10px;color:var(--muted);font-size:12px}
+.win .body{padding:14px}
+.clock{display:flex;justify-content:space-between;align-items:center;background:var(--soft);border-radius:10px;padding:10px 14px;margin-bottom:12px}
+.clock strong{font-size:22px;font-variant-numeric:tabular-nums}
+.row{display:grid;grid-template-columns:60px 1fr 92px;gap:8px;align-items:center;padding:8px 6px;border-bottom:1px solid var(--line)}
+.row:last-child{border:0}
+.tag{font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;text-align:center}
+.t-ok{background:color-mix(in srgb,var(--ok) 15%,transparent);color:var(--ok)}
+.t-run{background:color-mix(in srgb,var(--brand) 15%,transparent);color:var(--brand)}
+.t-wait{background:var(--soft);color:var(--muted)}
+.mono{font-family:ui-monospace,Menlo,monospace;color:var(--muted);font-size:12px}
+
+/* flow */
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;counter-reset:s}
+.step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center;position:relative}
+.step .ic{font-size:30px}
+.step h3{font-size:15px;margin:6px 0 4px}
+.step p{font-size:13px;color:var(--muted)}
+.step:not(:last-child)::after{content:"→";position:absolute;right:-12px;top:42%;color:var(--brand);font-weight:800}
+@media(max-width:860px){.flow{grid-template-columns:1fr 1fr}.step::after{display:none}}
+
+/* benefits */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:860px){.grid3{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+.card .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:22px;background:var(--soft);margin-bottom:12px}
+.card h3{font-size:17px;margin-bottom:6px}
+.card p{color:var(--muted);font-size:14.5px}
+
+/* compare */
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:700px){.vs{grid-template-columns:1fr}}
+.vs ul{list-style:none;padding:0}
+.vs li{padding:8px 0;border-bottom:1px dashed var(--line);font-size:15px}
+.vs li:last-child{border:0}
+.vs .bad h3{color:var(--warn)} .vs .good h3{color:var(--ok)}
+.vs .good{border-color:var(--ok)}
+
+/* pricing */
+.services{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+@media(max-width:700px){.services{grid-template-columns:1fr}}
+.svc .price{font-size:30px;font-weight:800;margin:6px 0}
+.svc .price small{font-size:15px;color:var(--muted);font-weight:400}
+.svc ul{padding-left:18px;color:var(--muted);font-size:14.5px}
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:14px}
+th,td{padding:11px 10px;text-align:center;border-bottom:1px solid var(--line)}
+td:first-child,th:first-child{text-align:left;position:sticky;left:0;background:var(--card);min-width:190px}
+thead th{font-size:15px}
+thead .p{display:block;font-size:20px;font-weight:800;color:var(--brand)}
+thead .p small{font-size:12px;color:var(--muted);font-weight:400}
+.hot{background:color-mix(in srgb,var(--brand) 7%,var(--card))}
+thead th.hot{border-top:3px solid var(--brand)}
+.pill{display:inline-block;font-size:11px;background:var(--brand);color:#fff;border-radius:99px;padding:1px 8px;margin-bottom:4px}
+.y{color:var(--ok);font-weight:800}.n{color:var(--line)}
+.red{color:var(--warn);font-weight:800}
+tr.grp td{background:var(--soft);font-weight:600;font-size:13px;color:var(--muted);text-align:left}
+.note{font-size:13px;color:var(--muted);margin-top:12px}
+
+/* faq + cta */
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:10px}
+summary{cursor:pointer;font-weight:600}
+details p{color:var(--muted);margin-top:8px;font-size:15px}
+.final{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-radius:22px;padding:44px 24px;text-align:center}
+.final p{opacity:.9;margin:8px 0 22px}
+.final .btn{background:#fff;color:#1d3fae}
+html{scroll-behavior:smooth}
+section{scroll-margin-top:64px}
+footer{padding:28px 0;color:var(--muted);font-size:13px;text-align:center}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a class="logo" href="#"><i>B</i>BuyMore</a>
+  <div class="links"><a href="#uu-diem">Ưu điểm</a><a href="#bang-gia">Bảng giá</a><a href="#faq">Hỏi đáp</a><a class="btn pri" style="padding:8px 14px" href="#lien-he">Liên hệ</a></div>
+</div></nav>
+
+<!-- HERO -->
+<header class="wrap hero">
+  <div>
+    <h1>Hàng mở bán giới hạn?<br><span class="grad">Để máy bấm thay bạn — đúng từng giây.</span></h1>
+    <p class="lead">BuyMore tự đăng nhập, chờ đúng giờ, cho vào giỏ, thanh toán và đọc OTP — chạy nhiều tài khoản cùng lúc. Bạn chỉ cần mở app.</p>
+    <div class="cta">
+      <a class="btn pri" href="#lien-he">Dùng thử miễn phí</a>
+      <a class="btn sec" href="#bang-gia">Xem bảng giá</a>
+    </div>
+    <div class="badges"><span>Yodobashi</span><span>7net</span><span>Rakuten</span><span>Bandai</span><span>Chyusen</span></div>
+  </div>
+
+  <div class="win" aria-label="Minh hoạ màn hình app">
+    <div class="bar"><b></b><b></b><b></b><span>BuyMore — Bảng chạy</span></div>
+    <div class="body">
+      <div class="clock"><div><div class="mono">Mở bán lúc 09:30:00</div><strong>09:29:58.4</strong></div><span class="tag t-run">Đang chờ giờ</span></div>
+      <div class="row"><span class="mono">TK0001</span><span>Đã thanh toán · OTP tự đọc ✓</span><span class="tag t-ok">Thành công</span></div>
+      <div class="row"><span class="mono">TK0002</span><span>Đang điền thẻ…</span><span class="tag t-run">Đang chạy</span></div>
+      <div class="row"><span class="mono">TK0003</span><span>Đã vào giỏ hàng</span><span class="tag t-run">Đang chạy</span></div>
+      <div class="row"><span class="mono">TK0004</span><span>Đăng nhập sẵn, chờ giờ</span><span class="tag t-wait">Chờ</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- FLOW -->
+<section class="wrap">
+  <h2>App làm gì thay bạn?</h2>
+  <p class="sub">Cả quy trình mua — từ lúc chờ đến lúc hàng về — trong một màn hình.</p>
+  <div class="flow">
+    <div class="step"><div class="ic">⏰</div><h3>Chờ đúng giờ</h3><p>Đăng nhập sẵn, đếm ngược tới giây mở bán</p></div>
+    <div class="step"><div class="ic">⚡</div><h3>Vào giỏ ngay</h3><p>Bấm mua tức thì, không chậm như tay</p></div>
+    <div class="step"><div class="ic">💳</div><h3>Điền thẻ</h3><p>Tự chọn thẻ, dùng point nếu đủ</p></div>
+    <div class="step"><div class="ic">🔐</div><h3>Đọc OTP</h3><p>Lấy mã từ SMS / Gmail, tự nhập</p></div>
+    <div class="step"><div class="ic">🚚</div><h3>Theo dõi đơn</h3><p>Biết đơn nào đã giao, đã nhận</p></div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="wrap" id="uu-diem">
+  <h2>Vì sao chọn BuyMore</h2>
+  <p class="sub">Làm ra từ nhu cầu thật của người săn hàng ở Nhật.</p>
+  <div class="grid3">
+    <div class="card"><div class="ic">🎯</div><h3>Nhanh &amp; đúng giây</h3><p>Chuẩn bị sẵn mọi thứ trước giờ G, đến giờ là bấm. Không mất lượt vì chậm tay hay gõ sai.</p></div>
+    <div class="card"><div class="ic">👥</div><h3>Nhiều nick cùng lúc</h3><p>Chạy song song nhiều tài khoản — gói cao nhất không giới hạn số tác vụ.</p></div>
+    <div class="card"><div class="ic">🌐</div><h3>Trình duyệt thật</h3><p>Mua trên Chrome thật của bạn qua extension, giống hệt thao tác người dùng.</p></div>
+    <div class="card"><div class="ic">🔑</div><h3>Tự đọc OTP</h3><p>Mã xác thực thẻ lấy tự động từ tin nhắn hoặc Gmail — không phải ngồi canh điện thoại.</p></div>
+    <div class="card"><div class="ic">🔒</div><h3>Dữ liệu nằm trên máy bạn</h3><p>Tài khoản, thẻ được mã hoá ngay trên máy. Có sao lưu Google Drive + khoá khôi phục.</p></div>
+    <div class="card"><div class="ic">📊</div><h3>Quản lý sau khi mua</h3><p>Theo dõi đơn, báo cáo, xuất CSV, Google Sheet — gói Business có thêm kho &amp; lịch sử bán.</p></div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section class="wrap">
+  <h2>Trước và sau khi dùng app</h2>
+  <p class="sub">&nbsp;</p>
+  <div class="vs">
+    <div class="card bad"><h3>✋ Mua tay</h3><ul>
+      <li>Canh đồng hồ, F5 liên tục</li>
+      <li>Chỉ làm được 1 nick một lúc</li>
+      <li>Gõ OTP chậm → hết hàng</li>
+      <li>Đơn ghi rời rạc, dễ sót</li>
+    </ul></div>
+    <div class="card good"><h3>🤖 Với BuyMore</h3><ul>
+      <li>Hẹn giờ, app tự chạy đúng giây</li>
+      <li>Nhiều nick song song</li>
+      <li>OTP tự đọc, tự nhập</li>
+      <li>Mọi đơn gom về một bảng</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="wrap" id="bang-gia">
+  <h2>Bảng giá</h2>
+  <p class="sub">Hai cách dùng — chọn cách hợp với bạn.</p>
+
+  <div class="services">
+    <div class="card svc">
+      <h3>Dịch vụ 1 · Mua hộ (bán lẻ)</h3>
+      <div class="price">700¥ <small>/ đơn</small></div>
+      <ul>
+        <li>Bên mình chạy hộ, bạn không cần cài app.</li>
+        <li>Chỉ tính phí đơn <b>vận chuyển thành công</b> (kể cả khi bạn không nhận được hàng vì lý do bất kỳ).</li>
+        <li>Bạn cung cấp thông tin cần thiết để mua hàng.</li>
+        <li>Không giới hạn số nick chạy mỗi ngày.</li>
+      </ul>
+    </div>
+    <div class="card svc">
+      <h3>Dịch vụ 2 · Thuê app theo tháng</h3>
+      <div class="price">từ 7,500¥ <small>/ tháng</small></div>
+      <ul>
+        <li>Cài app lên máy bạn, tự chạy bao nhiêu đơn cũng được.</li>
+        <li>Trả theo gói tháng, không tính theo số đơn.</li>
+        <li>Có gói dùng thử 0¥ để làm quen.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tblwrap"><table>
+    <thead><tr>
+      <th>Gói theo tháng</th>
+      <th>dry-free<span class="p">0¥ <small>dùng thử</small></span></th>
+      <th>basic<span class="p">7,500¥</span></th>
+      <th>basic-plus<span class="p">10,000¥</span></th>
+      <th class="hot"><span class="pill">Phổ biến</span><br>pro<span class="p">12,500¥</span></th>
+      <th>pro-max<span class="p">17,500¥</span></th>
+      <th>business<span class="p">55,500¥</span></th>
+    </tr></thead>
+    <tbody>
+      <tr class="grp"><td colspan="7">Giới hạn</td></tr>
+      <tr><td>Tác vụ chạy đồng thời</td><td class="red">1</td><td class="red">3</td><td class="red">5</td><td class="red hot">8</td><td class="red">12</td><td class="red">Không giới hạn</td></tr>
+      <tr><td>Tài khoản</td><td>1</td><td>15</td><td>25</td><td class="hot">35</td><td>50</td><td>Không giới hạn</td></tr>
+      <tr><td>E-mail</td><td>1</td><td>20</td><td>30</td><td class="hot">40</td><td>50</td><td>Không giới hạn</td></tr>
+      <tr><td>Máy dùng chung 1 KEY</td><td>1</td><td>1</td><td>1</td><td class="hot">1</td><td>1</td><td>3</td></tr>
+      <tr class="grp"><td colspan="7">Mua hàng</td></tr>
+      <tr><td>Chờ đúng giờ mở bán</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y hot">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+      <tr><td>Đặt đơn THẬT</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td><td class="y hot">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+      <tr><td>Săn hàng tốc độ cao (chuẩn từng giây)</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td><td class="y hot">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+      <tr><td>Tự động đọc OTP (tin nhắn / Gmail)</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td><td class="y hot">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+      <tr><td>Đăng ký Chyusen hàng loạt</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n hot">—</td><td class="y">✓</td><td class="y">✓</td></tr>
+      <tr><td>Mua hộ nhiều người (sổ Người mua hộ)</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n hot">—</td><td class="n">—</td><td class="y">✓</td></tr>
+      <tr class="grp"><td colspan="7">Quản lý</td></tr>
+      <tr><td>Báo cáo mua hàng + xuất CSV</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y hot">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+      <tr><td>Theo dõi đơn tự động</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td><td class="y hot">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+      <tr><td>Lịch sử bán &amp; Quản lý kho</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n hot">—</td><td class="n">—</td><td class="y">✓</td></tr>
+      <tr><td>Sổ Khấu hao (chi phí ngoài giá mua)</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n hot">—</td><td class="n">—</td><td class="y">✓</td></tr>
+      <tr><td>Sao lưu Google Drive</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td><td class="y hot">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+      <tr><td>Cập nhật tính năng mới</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td><td class="y hot">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Giá tính theo tháng, đã gồm cập nhật. Gói dry-free chạy thử toàn bộ quy trình nhưng không đặt đơn thật. Nâng/hạ gói bất cứ lúc nào, không phải cài lại app.</p>
+</section>
+
+<!-- FAQ -->
+<section class="wrap" id="faq">
+  <h2>Hỏi nhanh</h2>
+  <p class="sub">&nbsp;</p>
+  <details><summary>App chạy trên máy nào?</summary><p>macOS chip Apple (M1 trở lên). Tải về giải nén là chạy, có hướng dẫn cài từng bước trong app.</p></details>
+  <details><summary>Có được dùng thử không?</summary><p>Có. Gói dry-free 0¥ cho bạn chạy thử toàn bộ quy trình (không đặt đơn thật) trước khi trả tiền.</p></details>
+  <details><summary>Thông tin thẻ, tài khoản có an toàn không?</summary><p>Mọi dữ liệu được mã hoá và chỉ lưu trên máy bạn. Bên mình không giữ thẻ hay mật khẩu của bạn.</p></details>
+  <details><summary>Có cam kết mua được hàng không?</summary><p>Không ai cam kết được vì hàng giới hạn. App giúp bạn có cơ hội cao nhất có thể: vào đúng giây, nhiều nick, không chậm ở bước OTP. Với dịch vụ mua hộ, bạn chỉ trả tiền khi đơn được vận chuyển.</p></details>
+  <details><summary>Không rành máy tính có dùng được không?</summary><p>Được. App giao diện tiếng Việt, có hướng dẫn từng bước và hỗ trợ trực tiếp khi gặp lỗi.</p></details>
+</section>
+
+<!-- CTA -->
+<section class="wrap" id="lien-he">
+  <div class="final">
+    <h2>Sẵn sàng cho đợt mở bán tới?</h2>
+    <p>Nhắn cho mình để nhận key dùng thử hoặc tư vấn chọn gói.</p>
+    <a class="btn" href="mailto:buymore.contact202608@gmail.com?subject=BuyMore%20-%20T%C6%B0%20v%E1%BA%A5n">✉️ buymore.contact202608@gmail.com</a>
+  </div>
+</section>
+
+<footer>© 2026 BuyMore · Giá có thể thay đổi, giá áp dụng là giá tại thời điểm mua.</footer>
+<script>
+// Cuộn tới mục bằng JS: link "#..." không chạy khi trang mở qua file:// hay data: URL.
+document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+  a.addEventListener('click', function (e) {
+    var id = a.getAttribute('href').slice(1);
+    var el = id ? document.getElementById(id) : document.body;
+    if (!el) return;
+    e.preventDefault();
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
