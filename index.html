@@ -44,7 +44,9 @@ nav .links a{margin-left:20px;color:var(--muted);text-decoration:none;font-size:
 .hero p.lead{font-size:18px;color:var(--muted);margin:18px 0 26px}
 .hero .cta{display:flex;gap:12px;flex-wrap:wrap}
 .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
-.badges span{font-size:13px;padding:5px 10px;border-radius:99px;background:var(--soft);color:var(--brand);font-weight:600}
+.badges{align-items:center;gap:12px}
+.badges .shop{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 14px;display:flex;align-items:center}
+.badges .shop img{height:28px;width:auto;display:block}
 @media(max-width:860px){.hero{grid-template-columns:1fr}}
 /* khẩu hiệu: mỗi cụm nằm trọn 1 dòng, cỡ chữ co theo bề ngang (dòng dài nhất ≈ 13 lần cỡ chữ) */
 h1.slogan span{display:block;white-space:nowrap}
@@ -143,7 +145,7 @@ footer{padding:28px 0;color:var(--muted);font-size:13px;text-align:center}
       <a class="btn pri" href="#lien-he">Dùng thử miễn phí</a>
       <a class="btn sec" href="#bang-gia">Xem bảng giá</a>
     </div>
-    <div class="badges"><span>Yodobashi</span><span>Chyusen</span></div>
+    <div class="badges"><span class="shop"><img src="yodobashi.png" alt="Yodobashi Camera"></span><span class="shop"><img src="pokemon-center.png" alt="Pokémon Center"></span></div>
   </div>
 
   <div class="win" aria-label="Minh hoạ màn hình app">
