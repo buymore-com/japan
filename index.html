@@ -46,6 +46,10 @@ nav .links a{margin-left:20px;color:var(--muted);text-decoration:none;font-size:
 .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
 .badges span{font-size:13px;padding:5px 10px;border-radius:99px;background:var(--soft);color:var(--brand);font-weight:600}
 @media(max-width:860px){.hero{grid-template-columns:1fr}}
+/* khẩu hiệu: mỗi cụm nằm trọn 1 dòng, cỡ chữ co theo bề ngang (dòng dài nhất ≈ 13 lần cỡ chữ) */
+h1.slogan span{display:block;white-space:nowrap}
+h1.slogan{font-size:min(38px,calc((100vw - 72px) / 26))}
+@media(max-width:860px){h1.slogan{font-size:min(38px,calc((100vw - 40px) / 13.5))}}
 
 /* app mockup */
 .win{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 20px 50px -20px rgba(20,30,70,.35);overflow:hidden;font-size:13px}
@@ -133,7 +137,7 @@ footer{padding:28px 0;color:var(--muted);font-size:13px;text-align:center}
 <!-- HERO -->
 <header class="wrap hero">
   <div>
-    <h1>SĂN HÀNG TỰ ĐỘNG –<br><span class="grad">NHANH HƠN, NHIỀU HƠN!</span></h1>
+    <h1 class="slogan"><span>SĂN HÀNG TỰ ĐỘNG –</span><span class="grad">NHANH HƠN, NHIỀU HƠN!</span></h1>
     <p class="lead">BuyMore tự đăng nhập, chờ đúng giờ, cho vào giỏ, thanh toán và đọc mã xác thực — chạy nhiều tài khoản cùng lúc. Bạn chỉ cần mở app.</p>
     <div class="cta">
       <a class="btn pri" href="#lien-he">Dùng thử miễn phí</a>
